@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Slam</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        #slam-list {
+            list-style: none;
+            padding: 0;
+        }
+        .slam {
+            margin-bottom: 1rem;
+        }
+        .slam a {
+            display: block;
+            padding: 1rem;
+            background-color: #eee;
+            text-decoration: none;
+            color: #000;
+        }
+        .slam a:hover {
+            background-color: #ddd;
+        }
+        .slam a div {
+            display: flex;
+            flex-direction: column;
+        }
+        .slam a h2 {
+            margin: 0;
+        }
+        .slam a p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Daily Slam</h1>
+    <ul id="slam-list">
+    </ul>
+    <script>
+        const list = document.getElementById('slam-list');
+        fetch('/api/slam')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(slam => {
+                    const li = document.createElement('li');
+                    li.classList.add('slam');
+                    // create an anchor tag to link to the slam, containing a div with <h2>title</h2> and <p>description</p>
+                    const a = document.createElement('a');
+                    a.href = slam.url;
+                    const div = document.createElement('div');
+                    const h2 = document.createElement('h2');
+                    const p = document.createElement('p');
+                    h2.textContent = slam.title;
+                    p.textContent = slam.description;
+                    div.appendChild(h2);
+                    div.appendChild(p);
+                    a.appendChild(div);
+                    li.appendChild(a);
+                    list.appendChild(li);
+                });
+            });
+    </script>
+</body>
+</html>
